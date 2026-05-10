@@ -30,8 +30,14 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
     // CREATE USER
     public User createUser(User user) {
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         return userRepository.save(user);
     }
 

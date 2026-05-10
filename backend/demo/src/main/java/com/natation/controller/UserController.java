@@ -19,9 +19,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
     @PutMapping("/{id}")
     public User update(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 
     @PutMapping("/{userId}/club/{clubId}")
