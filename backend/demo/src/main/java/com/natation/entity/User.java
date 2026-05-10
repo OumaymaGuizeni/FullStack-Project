@@ -25,6 +25,7 @@ public class User {
 
     private String category;
     private String performances;
+    private String passcode;
 
     public User() {
     }
@@ -92,4 +93,6 @@ public class User {
     public void setPerformances(String performances) {
         this.performances = performances;
     }
+    public String getPasscode() { return passcode; }
+    public void setPasscode(String passcode) { this.passcode = passcode; }
 }

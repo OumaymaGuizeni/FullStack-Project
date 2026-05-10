@@ -23,4 +23,9 @@ public class AuthController {
     public com.natation.dto.AuthResponse login(@RequestBody LoginRequest req) {
         return authService.login(req);
     }
+
+    @PostMapping("/verify-passcode")
+    public com.natation.dto.AuthResponse verifyPasscode(@RequestParam String email, @RequestParam String passcode) {
+        return authService.verifyPasscode(email, passcode);
+    }
 }
