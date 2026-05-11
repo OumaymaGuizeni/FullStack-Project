@@ -26,8 +26,6 @@ public class User {
     private String category;
     private String performances;
     private String passcode;
-    private String address;
-    private String phoneNumber;
 
     public User() {
     }
@@ -97,8 +95,4 @@ public class User {
     }
     public String getPasscode() { return passcode; }
     public void setPasscode(String passcode) { this.passcode = passcode; }
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 }
