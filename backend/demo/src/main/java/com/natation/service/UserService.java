@@ -55,7 +55,15 @@ public class UserService {
             user.setRole(updatedUser.getRole());
             user.setAddress(updatedUser.getAddress());
             user.setPhoneNumber(updatedUser.getPhoneNumber());
+            user.setTrophies(updatedUser.getTrophies());
             
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public User updateTrophies(Long id, Integer trophies) {
+        return userRepository.findById(id).map(user -> {
+            user.setTrophies(trophies == null ? 0 : Math.max(0, trophies));
             return userRepository.save(user);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }

@@ -1,6 +1,7 @@
 package com.natation.controller;
 
 import com.natation.entity.User;
+import com.natation.dto.TrophiesRequest;
 import com.natation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,11 @@ public class UserController {
     @PutMapping("/{id}")
     public User update(@PathVariable Long id, @RequestBody User user) {
         return userService.updateUser(id, user);
+    }
+
+    @PutMapping("/{id}/trophies")
+    public User updateTrophies(@PathVariable Long id, @RequestBody TrophiesRequest request) {
+        return userService.updateTrophies(id, request.getTrophies());
     }
 
     @DeleteMapping("/{id}")
