@@ -83,7 +83,7 @@ public class AuthService {
             
             String roleName = user.getRole() != null ? user.getRole().name() : "SWIMMER";
             System.out.println("Returning final auth response for user: " + user.getUsername());
-            return new AuthResponse(token, user.getEmail(), user.getUsername(), roleName);
+            return new AuthResponse(token, user.getEmail(), user.getUsername(), roleName, user.getId());
         } else {
             throw new RuntimeException("Invalid passcode");
         }

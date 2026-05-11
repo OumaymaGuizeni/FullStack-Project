@@ -7,14 +7,16 @@ public class AuthResponse {
     private String role;
     private String message;
     private boolean mfaRequired;
+    private Long id;
 
     public AuthResponse() {}
 
-    public AuthResponse(String token, String email, String username, String role) {
+    public AuthResponse(String token, String email, String username, String role, Long id) {
         this.token = token;
         this.email = email;
         this.username = username;
         this.role = role;
+        this.id = id;
         this.mfaRequired = false;
     }
 
@@ -39,4 +41,6 @@ public class AuthResponse {
     public void setMfaRequired(boolean mfaRequired) { this.mfaRequired = mfaRequired; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 }
