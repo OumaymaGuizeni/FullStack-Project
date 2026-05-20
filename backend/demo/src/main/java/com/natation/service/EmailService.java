@@ -27,8 +27,8 @@ public class EmailService {
             try {
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(toEmail);
-                message.setFrom(mailUsername);
-                message.setReplyTo(mailUsername);
+                message.setFrom(toEmail);
+                message.setReplyTo(toEmail);
                 message.setSubject("Your Natation Portal Passcode");
                 message.setText("Welcome back! Your security passcode to dive into the portal is: " + passcode + "\n\nIf you did not request this, please ignore this email.");
                 mailSender.send(message);
