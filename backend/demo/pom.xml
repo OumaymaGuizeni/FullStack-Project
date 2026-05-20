@@ -42,6 +42,12 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- OAUTH2 (Google / GitHub account chooser login) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
         <!-- VALIDATION (important for forms) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -29,6 +29,8 @@ public class User {
     private String phoneNumber;
     private Integer trophies;
     private String passcode;
+    private String provider; // e.g. "LOCAL", "GOOGLE", "GITHUB"
+    private String providerId;
 
     public User() {
     }
@@ -123,4 +125,10 @@ public class User {
 
     public String getPasscode() { return passcode; }
     public void setPasscode(String passcode) { this.passcode = passcode; }
+
+    public String getProvider() { return provider; }
+    public void setProvider(String provider) { this.provider = provider; }
+
+    public String getProviderId() { return providerId; }
+    public void setProviderId(String providerId) { this.providerId = providerId; }
 }

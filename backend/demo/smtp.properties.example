@@ -1,0 +1,6 @@
+# Copy this file to smtp.properties and paste your real Gmail SMTP credentials.
+# Use a Gmail app password without spaces.
+# Do not commit smtp.properties.
+
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-gmail-app-password-without-spaces
