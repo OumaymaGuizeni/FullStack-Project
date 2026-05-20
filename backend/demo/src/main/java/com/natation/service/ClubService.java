@@ -18,7 +18,19 @@ public class ClubService {
     private UserRepository userRepo;
 
     public List<Club> getAll() {
-        return repo.findAll();
+        List<Club> clubs = repo.findAll();
+        for (Club club : clubs) {
+            List<User> users = userRepo.findAllByClub(club);
+            int total = users.stream()
+                .mapToInt(u -> u.getTrophies() != null ? u.getTrophies() : 0)
+                .sum();
+            if (club.getTrophies() == null || !club.getTrophies().equals(total)) {
+                System.out.println("Syncing trophies for Club: " + club.getName() + " -> " + total);
+                club.setTrophies(total);
+                repo.save(club);
+            }
+        }
+        return clubs;
     }
 
     public Club save(Club club) {
@@ -48,6 +60,7 @@ public class ClubService {
     }
 
     public List<Club> getClubsByRanking() {
+        getAll(); // Force synchronization check
         return repo.findAllByOrderByRankingDesc();
     }
 }

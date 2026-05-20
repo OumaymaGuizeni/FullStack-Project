@@ -38,12 +38,17 @@ public class UserService {
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        return userRepository.save(user);
+        User saved = userRepository.save(user);
+        if (saved.getClub() != null) {
+            updateClubTrophies(saved.getClub());
+        }
+        return saved;
     }
 
     // UPDATE USER
     public User updateUser(Long id, User updatedUser) {
         return userRepository.findById(id).map(user -> {
+            Club oldClub = user.getClub();
             user.setUsername(updatedUser.getUsername());
             user.setEmail(updatedUser.getEmail());
             
@@ -57,30 +62,67 @@ public class UserService {
             user.setPhoneNumber(updatedUser.getPhoneNumber());
             user.setTrophies(updatedUser.getTrophies());
             
-            return userRepository.save(user);
+            User saved = userRepository.save(user);
+            
+            if (saved.getClub() != null) {
+                updateClubTrophies(saved.getClub());
+            }
+            if (oldClub != null && (saved.getClub() == null || !oldClub.getId().equals(saved.getClub().getId()))) {
+                updateClubTrophies(oldClub);
+            }
+            
+            return saved;
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public User updateTrophies(Long id, Integer trophies) {
         return userRepository.findById(id).map(user -> {
             user.setTrophies(trophies == null ? 0 : Math.max(0, trophies));
-            return userRepository.save(user);
+            User saved = userRepository.save(user);
+            if (saved.getClub() != null) {
+                updateClubTrophies(saved.getClub());
+            }
+            return saved;
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     // DELETE USER
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        userRepository.findById(id).ifPresent(user -> {
+            Club club = user.getClub();
+            userRepository.delete(user);
+            if (club != null) {
+                updateClubTrophies(club);
+            }
+        });
     }
 
     // ASSIGN TO CLUB
     public User assignToClub(Long userId, Long clubId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        Club oldClub = user.getClub();
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new RuntimeException("Club not found"));
 
         user.setClub(club);
-        return userRepository.save(user);
+        User saved = userRepository.save(user);
+        
+        updateClubTrophies(club);
+        if (oldClub != null && !oldClub.getId().equals(club.getId())) {
+            updateClubTrophies(oldClub);
+        }
+        
+        return saved;
+    }
+
+    private void updateClubTrophies(Club club) {
+        if (club == null) return;
+        List<User> members = userRepository.findAllByClub(club);
+        int totalTrophies = members.stream()
+                .mapToInt(u -> u.getTrophies() != null ? u.getTrophies() : 0)
+                .sum();
+        club.setTrophies(totalTrophies);
+        clubRepository.save(club);
     }
 }
