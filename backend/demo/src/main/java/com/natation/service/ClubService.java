@@ -7,6 +7,10 @@ import com.natation.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class ClubService {
@@ -18,19 +22,23 @@ public class ClubService {
     private UserRepository userRepo;
 
     public List<Club> getAll() {
-        List<Club> clubs = repo.findAll();
-        for (Club club : clubs) {
-            List<User> users = userRepo.findAllByClub(club);
-            int total = users.stream()
-                .mapToInt(u -> u.getTrophies() != null ? u.getTrophies() : 0)
-                .sum();
-            if (club.getTrophies() == null || !club.getTrophies().equals(total)) {
-                System.out.println("Syncing trophies for Club: " + club.getName() + " -> " + total);
-                club.setTrophies(total);
-                repo.save(club);
-            }
-        }
-        return clubs;
+        return repo.findAll();
+    }
+
+    /**
+     * Retrieve a page of clubs with optional sorting.
+     *
+     * @param page zero‑based page index
+     * @param size number of elements per page
+     * @param sortBy property to sort by (e.g., "name", "ranking"); if null defaults to id
+     * @param direction "ASC" or "DESC"; defaults to ASC
+     * @return a Page containing the requested clubs
+     */
+    public Page<Club> getClubsPage(int page, int size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction != null ? direction : "ASC"),
+                sortBy != null ? sortBy : "id");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return repo.findAll(pageable);
     }
 
     public Club save(Club club) {
@@ -59,8 +67,15 @@ public class ClubService {
         });
     }
 
+    public List<Club> getClubsSortedByName() {
+        return repo.findAllByOrderByNameAsc();
+    }
+
+    public List<User> getAllUsersSortedByUsername() {
+        return userRepo.findAllByOrderByUsernameAsc();
+    }
+
     public List<Club> getClubsByRanking() {
-        getAll(); // Force synchronization check
         return repo.findAllByOrderByRankingDesc();
     }
 }

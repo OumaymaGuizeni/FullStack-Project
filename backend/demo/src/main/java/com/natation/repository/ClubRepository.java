@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
+    List<Club> findAllByOrderByNameAsc();
     List<Club> findAllByOrderByRankingDesc();
 }
