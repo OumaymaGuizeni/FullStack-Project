@@ -1,0 +1,8 @@
+# Copy this file to oauth.properties and paste real OAuth app credentials.
+# Do not commit oauth.properties.
+
+spring.security.oauth2.client.registration.google.client-id=your-real-google-client-id
+spring.security.oauth2.client.registration.google.client-secret=your-real-google-client-secret
+
+spring.security.oauth2.client.registration.github.client-id=your-real-github-client-id
+spring.security.oauth2.client.registration.github.client-secret=your-real-github-client-secret

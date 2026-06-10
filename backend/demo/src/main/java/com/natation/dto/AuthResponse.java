@@ -6,6 +6,7 @@ public class AuthResponse {
     private String username;
     private String role;
     private String message;
+    private String devPasscode;
     private boolean mfaRequired;
     private Long id;
 
@@ -37,6 +38,8 @@ public class AuthResponse {
     public void setRole(String role) { this.role = role; }
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
+    public String getDevPasscode() { return devPasscode; }
+    public void setDevPasscode(String devPasscode) { this.devPasscode = devPasscode; }
     public boolean isMfaRequired() { return mfaRequired; }
     public void setMfaRequired(boolean mfaRequired) { this.mfaRequired = mfaRequired; }
     public String getUsername() { return username; }
